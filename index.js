@@ -45,7 +45,7 @@ SERVER.get('/:id_', async(req, res, next) => {
         };
 
         const _dataQuery = await browser_getData(_id, _identifier, _creator);
-        res.status(200).json(_dataQuery.args[3]);
+        res.status(200).json(_dataQuery[0].args[3]);
     }
     catch (e) {
         console.log(e);
