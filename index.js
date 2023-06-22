@@ -45,15 +45,7 @@ SERVER.get('/:id_', async(req, res, next) => {
         };
 
         const _dataQuery = await browser_getData(_id, _identifier, _creator);
-        const _dataPackage = [];
-    
-        for (let _data of _dataQuery) {
-            console.log(_data);
-            console.log(_data.args);
-            _dataPackage.push(_data.args[3]);
-        };
-    
-        res.status(200).json(_dataPackage);
+        res.status(200).json(_dataQuery.args[3]);
     }
     catch (e) {
         console.log(e);
