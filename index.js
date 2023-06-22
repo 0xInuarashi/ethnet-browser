@@ -45,10 +45,11 @@ SERVER.get('/:id_', async(req, res, next) => {
         };
 
         const _dataQuery = await browser_getData(_id, _identifier, _creator);
-        const _content = _convertAtobJsonB64ToData(_dataQuery[0].args[3]);
+        const _content = _convertAtobJsonB64ToData(_dataQuery[0]?.args[3]);
 
         res.setHeader('Content-Type', _content.contentType);
-        res.status(200).json(_content.data);
+        res.setHeader('Content-Length', _content.data.length);
+        res.status(200).send(_content.data);
     }
     catch (e) {
         console.log(e);
