@@ -23,10 +23,10 @@ const _convertAtobJsonB64ToData = (string_) => {
     if (match) {
         const contentType = match[1];
         const encodedData = _trimAtobJsonB64(string_);
-        const decodedData = Buffer.from(encodedData, 'base64').toString();
+        const decodedData = Buffer.from(encodedData, 'base64');
         return { contentType, data: decodedData };
     } else {
-        return { contentType: "unknown", data: string_}; // Invalid data string format
+        return { contentType: "text/plain", data: string_}; // Invalid data string format
     };
 };
 
@@ -45,7 +45,10 @@ SERVER.get('/:id_', async(req, res, next) => {
         };
 
         const _dataQuery = await browser_getData(_id, _identifier, _creator);
-        res.status(200).json(_dataQuery[0].args[3]);
+        const _content = _convertAtobJsonB64ToData(_dataQuery[0].args[3]);
+
+        res.setHeader('Content-Type', _content.contentType);
+        res.status(200).json(_content.data);
     }
     catch (e) {
         console.log(e);
