@@ -30,6 +30,37 @@ const _convertAtobJsonB64ToData = (string_) => {
     };
 };
 
+SERVER.get('/:id_', async(req, res, next) => {
+    try {
+        const _id = req.params.id_ || null;
+        const _identifier = req.query.identifier || null;
+        const _creator = req.query.creator || null;
+
+        if (_id === null &&
+            _identifier === null &&
+            _creator === null) {
+
+            res.status(400).json({"message": "no query"});
+            return
+        };
+
+        const _dataQuery = await browser_getData(_id, _identifier, _creator);
+        const _dataPackage = [];
+    
+        for (let _data of _dataQuery) {
+            console.log(_data);
+            console.log(_data.args);
+            _dataPackage.push(_data.args[3]);
+        };
+    
+        res.status(200).json(_dataPackage);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).json({"message": "error"});
+    };
+});
+
 SERVER.get('/', async(req, res, next) => {
     try {
         const _id = req.query.id || null;
